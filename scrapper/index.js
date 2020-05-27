@@ -20,8 +20,8 @@ const popularScrapper = async () => {
 
     console.log('-------------------------')
     console.log('Popular')
-    console.log('compra', dollarBuy);
-    console.log('venta', dollarSell);
+    console.log('buy', dollarBuy);
+    console.log('sell', dollarSell);
     console.log('-------------------------')
 
     browser.close();
@@ -35,8 +35,8 @@ const scotiaScrapper = () => {
             const dollarSell = $('.bns--table').find('tr').eq(1).first().find('td').eq(3)
             console.log('-------------------------')
             console.log('Scotia')
-            console.log('compra', dollarBuy.text());
-            console.log('venta', dollarSell.text());
+            console.log('buy', dollarBuy.text());
+            console.log('sell', dollarSell.text());
             console.log('-------------------------')
         }
     })

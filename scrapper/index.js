@@ -18,13 +18,14 @@ const popularScrapper = async () => {
     });
 
 
-    console.log('-------------------------')
-    console.log('Popular')
-    console.log('buy', dollarBuy);
-    console.log('sell', dollarSell);
-    console.log('-------------------------')
+    // console.log('-------------------------')
+    // console.log('Popular')
+    // console.log('buy', dollarBuy);
+    // console.log('sell', dollarSell);
+    // console.log('-------------------------')
 
     browser.close();
+    return { dollarBuy, dollarSell }
 }
 
 const scotiaScrapper = () => {

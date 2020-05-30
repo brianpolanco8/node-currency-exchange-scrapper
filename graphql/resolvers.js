@@ -9,6 +9,8 @@ module.exports = {
             const popularDollarRates = await popularScrapper();
             const scotiaDollarRates = await scotiaScrapper();
 
+            console.log('scotiaDollarRates', scotiaDollarRates)
+
 
             let usdRates = await USDRates.findOne({});
             try {

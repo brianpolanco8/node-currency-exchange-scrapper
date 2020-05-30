@@ -25,6 +25,12 @@ app.use(bodyParser.json())
 
 app.use(cors())
 
+app.get('/', (req, res, next) => {
+    res.status(200).json({
+        working: 'yes'
+    })
+})
+
 const server = new ApolloServer({
     typeDefs: schema, resolvers, formatError: (error) => {
         data = error.originalError.data;

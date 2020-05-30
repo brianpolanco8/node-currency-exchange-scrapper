@@ -5,11 +5,12 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const { ApolloServer } = require('apollo-server-express');
 const { resolvers, schema } = require('./graphql')
+const cors = require('cors')
 const { scotiaScrapper, popularScrapper } = require('./scrapper')
 
 
 
-cron.schedule('* * * * *', () => {
+cron.schedule('0 0 */1 * * *', () => {
     popularScrapper().then(dollarRates => {
         resolvers.Query.usdRates().then(dollarRates => {
             console.log(dollarRates)
@@ -18,6 +19,8 @@ cron.schedule('* * * * *', () => {
 });
 
 app.use(bodyParser.json())
+
+app.use(cors())
 
 const server = new ApolloServer({
     typeDefs: schema, resolvers, formatError: (error) => {

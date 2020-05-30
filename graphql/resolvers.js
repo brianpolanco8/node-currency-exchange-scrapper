@@ -1,34 +1,14 @@
 const mongoose = require('mongoose')
 const USDRates = require('../models/usdRates')
-const { popularScrapper } = require('../scrapper')
+const { popularScrapper, scotiaScrapper } = require('../scrapper')
 
 module.exports = {
     Query: {
         hello: () => 'Hello world!',
         usdRates: async () => {
-            const dollarRates = await popularScrapper();
+            const popularDollarRates = await popularScrapper();
+            const scotiaDollarRates = await scotiaScrapper();
 
-            // const usdRates = new USDRates({
-            //     buy: {
-            //         popularDollarBuy: dollarRates.dollarBuy,
-            //     },
-            //     sell: {
-            //         popularDollarSell: dollarRates.dollarSell
-            //     }
-            // });
-
-            // await usdRates.save();
-
-            // const usdRates = await USDRates.findOneAndUpdate({}, {
-            //     buy: {
-            //         ...usdRates.buy,
-            //         popularDollarBuy: dollarRates.dollarBuy,
-            //     },
-            //     sell: {
-            //         ...usdRates.sell,
-            //         popularDollarSell: dollarRates.dollarSell
-            //     }
-            // }, { upsert: true });
 
             let usdRates = await USDRates.findOne({});
             try {
@@ -36,21 +16,25 @@ module.exports = {
                     await USDRates.updateOne({}, {
                         buy: {
                             ...usdRates.buy,
-                            popularDollarBuy: dollarRates.dollarBuy,
+                            popularDollarBuy: popularDollarRates.dollarBuy,
+                            scotiaDollarBuy: scotiaDollarRates.dollarBuy
                         },
                         sell: {
                             ...usdRates.sell,
-                            popularDollarSell: dollarRates.dollarSell
+                            popularDollarSell: popularDollarRates.dollarSell,
+                            scotiaDollarSell: scotiaDollarRates.dollarSell
                         }
                     })
 
                 } else {
                     usdRates = new USDRates({
                         buy: {
-                            popularDollarBuy: dollarRates.dollarBuy,
+                            popularDollarBuy: popularDollarRates.dollarBuy,
+                            scotiaDollarBuy: scotiaDollarRates.dollarBuy
                         },
                         sell: {
-                            popularDollarSell: dollarRates.dollarSell
+                            popularDollarSell: popularDollarRates.dollarSell,
+                            scotiaDollarSell: scotiaDollarRates.dollarSell
                         }
                     })
                 }
@@ -59,6 +43,12 @@ module.exports = {
             }
             await usdRates.save()
             return { ...usdRates._doc, _id: usdRates._id.toString(), createdAt: usdRates.createdAt.toISOString(), updatedAt: usdRates.updatedAt.toISOString() }
+        },
+        getUsdRates: async () => {
+            const usdRates = await USDRates.findOne({});
+            console.log('usdRates', usdRates)
+
+            return { ...usdRates._doc, _id: usdRates._id.toString(), buy: { ...usdRates.buy }, createdAt: usdRates.createdAt.toISOString(), updatedAt: usdRates.updatedAt.toISOString() }
         }
     },
 };

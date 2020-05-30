@@ -25,22 +25,27 @@ const popularScrapper = async () => {
     // console.log('-------------------------')
 
     browser.close();
+    parseInt(dollarBuy)
+    parseInt(dollarSell)
     return { dollarBuy, dollarSell }
 }
 
 const scotiaScrapper = () => {
+    let dollarBuy = '';
+    let dollarSell = '';
     request('https://do.scotiabank.com/banca-personal/tarifas/tasas-de-cambio.html', (error, response, html) => {
         if (!error && response.statusCode === 200) {
             const $ = cheerio.load(html);
-            const dollarBuy = $('.bns--table').find('tr').eq(1).first().find('td').eq(2);
-            const dollarSell = $('.bns--table').find('tr').eq(1).first().find('td').eq(3)
-            console.log('-------------------------')
-            console.log('Scotia')
-            console.log('buy', dollarBuy.text());
-            console.log('sell', dollarSell.text());
-            console.log('-------------------------')
+            const scrappedBuyValue = $('.bns--table').find('tr').eq(1).first().find('td').eq(2);
+            const scrappedSellValue = $('.bns--table').find('tr').eq(1).first().find('td').eq(3)
+            // console.log('dollarBuy', scrappedBuyValue.text())
+            dollarBuy = scrappedBuyValue.text();
+            dollarSell = scrappedSellValue.text();
         }
+
     })
+    console.log('dollarBuy', dollarBuy)
+    return { dollarBuy, dollarSell }
 }
 
 module.exports = {
